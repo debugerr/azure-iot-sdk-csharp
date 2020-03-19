@@ -335,7 +335,7 @@ namespace Microsoft.Azure.Devices.Client.Transport
             return result;
         }
 
-        Task PostAsyncHelper<T1>(
+        async Task PostAsyncHelper<T1>(
             Uri requestUri,
             T1 entity,
             IDictionary<HttpStatusCode, Func<HttpResponseMessage, Task<Exception>>> errorMappingOverrides,
@@ -343,7 +343,7 @@ namespace Microsoft.Azure.Devices.Client.Transport
             Func<HttpResponseMessage, CancellationToken, Task> processResponseMessageAsync,
             CancellationToken cancellationToken)
         {
-            return this.ExecuteAsync(
+            await this.ExecuteAsync(
                 HttpMethod.Post,
                 new Uri(this.baseAddress, requestUri),
                 (requestMsg, token) =>
@@ -371,7 +371,7 @@ namespace Microsoft.Azure.Devices.Client.Transport
                 },
                 processResponseMessageAsync,
                 errorMappingOverrides,
-                cancellationToken);
+                cancellationToken).ConfigureAwait(false);
         }
 
         public Task DeleteAsync<T>(

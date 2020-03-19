@@ -243,7 +243,14 @@ namespace Microsoft.Azure.Devices.Client.Transport.Mqtt
 
             using (CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, this.disconnectAwaitersCancellationSource.Token))
             {
-                await this.receivingSemaphore.WaitAsync(linkedCts.Token).ConfigureAwait(true);
+                try
+                {
+                    await this.receivingSemaphore.WaitAsync(linkedCts.Token).ConfigureAwait(true);
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
             }
 
             return true;

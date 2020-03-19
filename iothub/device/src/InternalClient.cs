@@ -628,7 +628,7 @@ namespace Microsoft.Azure.Devices.Client
         /// <param name="blobName"></param>
         /// <param name="source"></param>
         /// <returns>AsncTask</returns>
-        public Task UploadToBlobAsync(String blobName, Stream source, CancellationToken cancellationToken)
+        public async Task UploadToBlobAsync(String blobName, Stream source, CancellationToken cancellationToken)
         {
             try
             {
@@ -665,7 +665,7 @@ namespace Microsoft.Azure.Devices.Client
 
                 httpTransport = new HttpTransportHandler(context, IotHubConnectionString, transportSettings);
 
-                return httpTransport.UploadToBlobAsync(blobName, source, cancellationToken);
+                await httpTransport.UploadToBlobAsync(blobName, source, cancellationToken).ConfigureAwait(false);
             }
             finally
             {
